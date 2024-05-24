@@ -4,6 +4,7 @@ let videoElement = null;
 let canvasElement = null;
 let containerElement = null;
 let currentStream = null;
+let intervalTimerId = null;
 
 async function loadModels() {
   await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL)
@@ -64,9 +65,14 @@ async function startVideo(cameraId) {
         const windowSize = 5;  // 移動平均のウィンドウサイズ
         const threshold = 0.35;   // 変化率の閾値
 
-        setInterval(async () => {
+        intervalTimerId = setInterval(async () => {
           // 顔・顔の特徴点の検出
           const detections = await faceapi.detectAllFaces(videoElement, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
+
+          // 検知できない場合は、その後の処理をスキップ
+          if (detections.length === 0) {
+            return;
+          }
 
           // 検出された顔のデータをWebへの表示サイズにリサイズする
           const resizedDetections = faceapi.resizeResults(detections, displaySize)
@@ -158,5 +164,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     startVideo(message.cameraId);
   } else if (message.action === "stopVideo") {
     stopVideo();
+    clearInterval(intervalTimerId);
   }
 });

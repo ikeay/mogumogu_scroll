@@ -4,25 +4,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Blob Extension</title>
+  <title>Mogumog Scroll</title>
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/skeleton.css" />
   <style>
+    body {
+      width: 150px;
+      text-align: center;
+    }
+
     button {
-      width: 100px;
-      padding: 5px 5px;
       margin: 10px;
+      width: 120px;
     }
 
     select {
-      width: 100px;
-      padding: 5px 5px;
       margin: 10px;
+      width: 120px;
     }
   </style>
 </head>
 
 <body>
-  <button id="startVideo">Start Video</button>
-  <button id="stopVideo">Stop Video</button>
+  <button id="startVideo" class="button-primary">カメラオン</button>
+  <button id="stopVideo">カメラオフ</button>
   <select id="cameraSelect"></select>
   <script src="popup.js"></script>
 </body>
